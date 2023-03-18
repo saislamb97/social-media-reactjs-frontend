@@ -1,33 +1,43 @@
 import "./post.css";
 import { MoreVert } from "@mui/icons-material";
+import {Users} from '../../dummyData'
+import { useState } from "react";
 
-export default function Post() {
+export default function Post({post}) {
   
+  const [like, setLike] = useState(post.like)
+  const [isliked, setisLiked] = useState(false)
+
+  const likeHandler = ()=>{
+    setLike(isliked? like - 1 : like + 1 )
+    setisLiked(!isliked)
+  }
+
   return (
     <div className="post">
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopLeft">
-            <img className="postProfileImg" src="/assets/post/9.jpeg" alt="post" />
-            <span className="postUsername">Saif</span>
-            <span className="postDate">4th Sept</span>
+            <img className="postProfileImg" src={Users.filter((u)=>u.id === post?.userId)[0].profilePicture} alt="post" />
+            <span className="postUsername">{Users.filter((u)=>u.id === post?.userId)[0].username}</span>
+            <span className="postDate">{post.date}</span>
           </div>
           <div className="postTopRight">
             <MoreVert />
           </div>
         </div>
         <div className="postCenter">
-          <span className="postText">Saiful Islam</span>
-          <img className="postImg" src="/assets/post/1.jpeg" alt="post" />
+          <span className="postText">{post?.desc}</span>
+          <img className="postImg" src={post.photo} alt="post" />
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
-            <img className="likeIcon" src="assets/like.png" alt="likes" />
-            <img className="likeIcon" src="assets/heart.png" alt="heart" />
-            <span className="postLikeCounter">50 people like it</span>
+            <img className="likeIcon" src="assets/like.png" onClick={likeHandler} alt="likes" />
+            <img className="likeIcon" src="assets/heart.png" onClick={likeHandler} alt="heart" />
+            <span className="postLikeCounter">{like} people like it</span>
           </div>
           <div className="postBottomRight">
-            <span className="postCommentText">20 comments</span>
+            <span className="postCommentText">{post.comment} comments</span>
           </div>
         </div>
       </div>
